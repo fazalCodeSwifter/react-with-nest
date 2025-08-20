@@ -1,10 +1,11 @@
 import { Eye, EyeClosed } from "lucide-react"
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginApi } from "../../utils/http/httpRequest";
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../../store/store";
-import { loginStore } from "../../store/authSlice";
+// import { useDispatch } from "react-redux";
+// import type { AppDispatch } from "../../store/store";
+// import { loginStore } from "../../store/authSlice";
+import { localTokenStorage, localUserStorage } from "../../storage/storage";
 
 interface ILogin{
     email: string,
@@ -24,7 +25,8 @@ interface ILoginHandler {
 
 const Login = () => {
 
-  const dispatch = useDispatch<AppDispatch>()
+  // const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
 
     const [eye, setEye] = useState<boolean>(false)
     const [userData, setUserData] = useState<ILoginHandler>({
@@ -49,10 +51,12 @@ const Login = () => {
 
           
           const response = await loginApi(login)
-          dispatch(loginStore(response.data))
+          // dispatch(loginStore(response.data))
+          localTokenStorage.tokens.setAccess(response.data?.access_token)
+          localTokenStorage.tokens.setRefresh(response.data?.refresh_token)
+          localUserStorage.setUserDataInStorage(response.data?.user)
+          navigate('/profile')
           
-          setUserData({...userData, user: response?.data?.user})
-
         } catch (error: any) {
           
           setUserData({...userData, error: error?.response?.data})

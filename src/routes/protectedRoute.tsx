@@ -1,15 +1,15 @@
-import { useSelector } from 'react-redux'
-import type { RootState } from '../store/store'
 import { Navigate } from 'react-router-dom'
+import { localUserStorage } from '../storage/storage'
 
 interface ProtectedRouteProps{
     children: React.ReactNode
 }
 
 const protectedRoute = ({children}: ProtectedRouteProps) => {
-    const isAuth = useSelector((state: RootState) => state.auth.isAuth)
+    const user = localUserStorage.getUserDataInStorage()
+    
 
-    if(!isAuth){
+    if(!user?.userId){
         return <Navigate to="/login" replace />
     }
     return <>{children}</>

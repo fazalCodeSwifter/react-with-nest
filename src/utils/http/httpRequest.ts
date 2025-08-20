@@ -14,7 +14,7 @@ const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-    const token = store.getState().auth.access_token;
+    const token = localTokenStorage.getAccessToken()
     if (token) {
         config.headers = config.headers ?? {};
         config.headers.Authorization = `Bearer ${token}`;
@@ -37,6 +37,8 @@ api.interceptors.response.use(
                 }
                 const response = await axios.post(`${BASE_URL}/auth/refresh`, { refreshToken: token }, { withCredentials: true })
                 store.dispatch(refresh(response.data))
+                localTokenStorage.tokens.setAccess(response.data?.access_token)
+                localTokenStorage.tokens.setRefresh(response.data?.refresh_token)
                 original.headers = {...(original.headers || {}), Authorization: `Bearer ${response.data?.access_token}`};
                 return api(original)
             } catch (err) {
@@ -56,6 +58,18 @@ export const loginApi = async (data: any) => {
 
 export const refreshApi = async (data: { refreshToken: string | null }) => {
     const response = await api.post("/auth/refresh", data)
+    return response;
+}
+
+
+export const profileApi = async () => {
+    const response = await api.get("/auth/profile")
+    return response;
+}
+
+
+export const productseApi = async () => {
+    const response = await axios.get(`${BASE_URL}/products`)
     return response;
 }
 
