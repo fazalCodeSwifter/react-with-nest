@@ -11,6 +11,9 @@ import { useDispatch } from "react-redux"
 import type { AppDispatch } from "./store/store"
 import { setAllProduct } from "./store/productSlice"
 import ProductsContainer from "./pages/products/productsContainer"
+import Messages from "./pages/messages/Messages"
+import { useEffect } from "react"
+import { initSocket } from "./utils/sockets/socket"
 
 function App() {
 
@@ -19,6 +22,10 @@ function App() {
   const dispatch = useDispatch<AppDispatch>()
 
   dispatch(setAllProduct(products))
+
+  useEffect(() => {
+    initSocket()
+  },[])
 
   if(loading) return <h1 className="text-4xl font-bold">LODING...</h1>
   if(error) return <h1 className="text-4xl font-bold">{error}</h1>
@@ -46,6 +53,11 @@ function App() {
       <Route path="/dashboard" element={
         <ProtectedRoute>
           <Dashboard />
+        </ProtectedRoute>
+      } />
+      <Route path="/messages" element={
+        <ProtectedRoute>
+          <Messages />
         </ProtectedRoute>
       } />
 

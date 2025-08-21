@@ -31,7 +31,8 @@ const Profile = () => {
   return (
     <div>
       <h1 className="text-6xl m-20">Profile Page</h1>
-      <Link to="/dashboard" className="m-20 text-blue-500 text-2xl hover:underline font-bold">Dashboard Page</Link>
+      <Link to="/dashboard" className="m-20 text-blue-500 block text-2xl hover:underline font-bold">Dashboard Page</Link>
+      <Link to="/messages" className="m-20 text-blue-500 text-2xl hover:underline font-bold">Message Page</Link>
 
     </div>
   )
