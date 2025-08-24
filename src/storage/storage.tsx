@@ -10,6 +10,7 @@ export interface ITokenStorage {
     getRefreshToken(): string | null;
     clearRefreshToken(): void;
     clearAccessToken(): void;
+    clearUserSession(): void;
 }
 
 export interface IUserDto {
@@ -60,6 +61,9 @@ export const localTokenStorage: ITokenStorage = {
     },
     clearAccessToken: () => {
         localStorage.removeItem(ACCESS_TOKEN_KEY)
+    },
+    clearUserSession: () => {
+        localStorage.removeItem(USER_DATA_KEY)
     }
 }
 

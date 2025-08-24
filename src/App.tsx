@@ -14,6 +14,7 @@ import ProductsContainer from "./pages/products/productsContainer"
 import Messages from "./pages/messages/Messages"
 import { useEffect } from "react"
 import { initSocket } from "./utils/sockets/socket"
+import Navbar from "./components/Navbar"
 
 function App() {
 
@@ -25,44 +26,45 @@ function App() {
 
   useEffect(() => {
     initSocket()
-  },[])
+  }, [])
 
-  if(loading) return <h1 className="text-4xl font-bold">LODING...</h1>
-  if(error) return <h1 className="text-4xl font-bold">{error}</h1>
+  if (loading) return <h1 className="text-4xl font-bold">LODING...</h1>
+  if (error) return <h1 className="text-4xl font-bold">{error}</h1>
 
   return (
     <>
-    <Routes>
-      <Route path="/" element={<Home />}/>
-      <Route path="/products" element={<ProductsContainer />}/>
-      <Route path="/login" element={
-        <PublicRoute>
-          <Login />
-        </PublicRoute>
-      }/>
-      <Route path="/signup" element={
-        <PublicRoute>
-          <Signup />
-        </PublicRoute>
-      }/>
-      <Route path="/profile" element={
-        <ProtectedRoute>
-          <Profile />
-        </ProtectedRoute>
-      } />
-      <Route path="/dashboard" element={
-        <ProtectedRoute>
-          <Dashboard />
-        </ProtectedRoute>
-      } />
-      <Route path="/messages" element={
-        <ProtectedRoute>
-          <Messages />
-        </ProtectedRoute>
-      } />
+    <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/products" element={<ProductsContainer />} />
+        <Route path="/login" element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        } />
+        <Route path="/signup" element={
+          <PublicRoute>
+            <Signup />
+          </PublicRoute>
+        } />
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        } />
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/messages" element={
+          <ProtectedRoute>
+            <Messages />
+          </ProtectedRoute>
+        } />
 
-    </Routes>
-     
+      </Routes>
+
     </>
   )
 }

@@ -4,6 +4,7 @@ import { BASE_URL } from "../http/httpRequest";
 import { localTokenStorage } from "../../storage/storage";
 
 let socket: Socket | null = null;
+let count = 0
 
 const refreshAccessToken = async (token: string | null) => {
     try {
@@ -16,7 +17,9 @@ const refreshAccessToken = async (token: string | null) => {
         localTokenStorage.tokens.setAccess(response.data?.access_token)
         localTokenStorage.tokens.setRefresh(response.data?.refresh_token)
         const newAccessToken = response.data?.access_token;
+
         return newAccessToken;
+        
         
     } catch (error: any) {
         console.log("refresh token failed =>", error.response.data.message )
@@ -35,6 +38,7 @@ export const initSocket = () => {
             token: token
         },
         transports: ["websocket"],
+        reconnection: false
     });
 
     socket.on("connect", () => {
@@ -48,6 +52,8 @@ export const initSocket = () => {
     });
 
     socket.on("unauthorized", async (err: any) => {
+                count += 1
+        console.log("refresh-Token", count);
         console.log("socket error --->",err);
         
         console.log("socket error", err.message);

@@ -16,7 +16,8 @@ const Profile = () => {
 
         // const token = localTokenStorage.getRefreshToken()
         const response = await profileApi()    
-        console.log(response.data);
+
+        // console.log(response.data);
         
         // dispatch(refresh(response.data))
         
